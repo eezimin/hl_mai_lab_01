@@ -43,41 +43,16 @@ using Poco::Util::ServerApplication;
 class HTTPWebServer : public Poco::Util::ServerApplication
 {
 public:
-    HTTPWebServer() : _helpRequested(false)
-    {
-    }
-
-    ~HTTPWebServer()
-    {
-    }
-
-protected:
-    void initialize(Application &self)
-    {
-        loadConfiguration();
-        ServerApplication::initialize(self);
-    }
-
-    void uninitialize()
-    {
-        ServerApplication::uninitialize();
-    }
-
     int main([[maybe_unused]] const std::vector<std::string> &args)
     {
-        if (!_helpRequested)
-        {
             database::User::init();
             ServerSocket svs(Poco::Net::SocketAddress("0.0.0.0", 8080));
             HTTPServer srv(new HTTPRequestFactory(DateTimeFormat::SORTABLE_FORMAT), svs, new HTTPServerParams);
             srv.start();
             waitForTerminationRequest();
             srv.stop();
-        }
+
         return Application::EXIT_OK;
     }
-
-private:
-    bool _helpRequested;
 };
 #endif // !HTTPWEBSERVER
