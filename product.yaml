@@ -1,0 +1,175 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: 'Arch Lab API'
+  description: Домашнее задание по курсу Архитектура программных систем
+servers:
+  - url: http://localhost:8083
+    description: Product server
+paths:
+  /product:
+    post:
+      summary: Добавление нового типа услуги
+      parameters:
+      - name: name
+        description: Название услуги
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: category
+        description: Категория услуги
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: description
+        description: Описание услуги
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: price
+        description: Цена за единицу услуги
+        in: query
+        required: true
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Услуга добавлена
+          content:
+            application/json:
+              schema:
+                type: integer
+        404:
+          description: Услуга не добавлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Неожиданная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /read_by_id:
+    get:
+      summary: Чтение информации об услуге
+      parameters:
+      - name: id
+        description: Уникальный идентификатор услуги
+        in: query
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Найденная услуга
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+        404:
+          description: Услуга не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Неожиданная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /read_all:
+    get:
+      summary: Вывод полного списка услуг
+      responses:
+        '200':
+          description: Полный список услуг
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        404:
+          description: Услуги не найдены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Неожиданная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /search:
+    get:
+      summary: Поиск всех услуг из заказа пользователя по логину
+      parameters:
+      - name: login
+        description: Логин пользователя
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Услуги найдены
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+        404:
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    products:
+      type: array
+      products:
+        $ref: '#/components/schemas/product'
+    product:
+      type: object
+      required:
+        - id
+        - name
+        - category
+        - description
+        - price
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: Сообщение о ошибке
+          type: string
+  securitySchemes:
+      basicAuth:     
+        type: http
+        scheme: basic
+security:
+  - basicAuth: []

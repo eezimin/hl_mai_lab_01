@@ -38,7 +38,7 @@ using Poco::Util::OptionSet;
 using Poco::Util::OptionCallback;
 using Poco::Util::HelpFormatter;
 
-#include "handlers/product_handler.h"
+#include "handlers/user_handler.h"
 
 
 class HTTPRequestFactory: public HTTPRequestHandlerFactory
@@ -54,11 +54,10 @@ public:
     {
 
         std::cout << "request:" << request.getURI()<< std::endl;
-        if (hasSubstr(request.getURI(),"/read_by_id") ||
-            hasSubstr(request.getURI(),"/read_all") ||
+        if (hasSubstr(request.getURI(),"/user") ||
             hasSubstr(request.getURI(),"/search") ||
-            hasSubstr(request.getURI(),"/product")) 
-            return new ProductHandler(_format);
+            hasSubstr(request.getURI(),"/auth")) 
+            return new UserHandler(_format);
         return 0;
     }
 

@@ -1,0 +1,56 @@
+openapi: '3.0.0'
+info:
+  version: '1.0.0'
+  title: 'Arch Lab API'
+  description: Домашнее задание по курсу Архитектура программных систем
+servers:
+  - url: http://localhost:8082
+    description: Order server
+paths:
+  /order:
+    post:
+      summary: Добавление услуги в заказ
+      parameters:
+      - name: id_product
+        description: Идентификатор услуги
+        in: query
+        required: true
+        schema:
+          type: integer
+      - name: login
+        description: Логин пользователя
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Услуга успешно добавлена в заказ
+        404:
+          description: Заказ не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Непредвиденная ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          description: Сообщение о ошибке
+          type: string
+  securitySchemes:
+      basicAuth:     
+        type: http
+        scheme: basic
+security:
+  - basicAuth: []
