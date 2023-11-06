@@ -27,8 +27,9 @@ add_executable(${EXAMPLE_BINARY} main.cpp
                                  config/config.cpp 
                                  database/database.cpp
                                  database/user.cpp
+                                 database/order.cpp
                                  database/product.cpp
-                                 database/order.cpp)
+                                 )
 
 
 target_include_directories(${EXAMPLE_BINARY} PRIVATE "${CMAKE_BINARY_DIR}")
@@ -60,8 +61,3 @@ target_link_libraries(${OTHER_SERVICE} PRIVATE
                              "PocoDataMySQL"
                              "mysqlclient"
                              ZLIB::ZLIB)
-
-
-
-
-

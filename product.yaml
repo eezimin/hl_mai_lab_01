@@ -138,8 +138,8 @@ components:
   schemas:
     products:
       type: array
-      products:
-        $ref: '#/components/schemas/product'
+      # productss:
+      #   $ref: '#/components/schemas/product'
     product:
       type: object
       required:
